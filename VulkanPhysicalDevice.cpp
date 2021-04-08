@@ -17,7 +17,7 @@ VulkanPhysicalDevice::VulkanPhysicalDevice(VkPhysicalDevice device): device(devi
 #endif
 }
 
-std::set<uint32_t> VulkanPhysicalDevice::getQueueIndices(VkQueueFlagBits bits) {
+std::set<uint32_t> VulkanPhysicalDevice::getQueueFamilyIndices(VkQueueFlagBits bits) {
     std::set<uint32_t> s;
     for (uint32_t i = 0; i < queueFamilyProperties.size(); i++){
         if (queueFamilyProperties[i].queueFlags & bits){

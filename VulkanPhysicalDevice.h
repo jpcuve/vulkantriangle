@@ -22,7 +22,7 @@ public:
     VkPhysicalDeviceFeatures getFeatures(){return physicalDeviceFeatures;}
     const char *getName(){return physicalDeviceProperties.deviceName;}
     std::vector<VkQueueFamilyProperties> getQueueFamilyProperties(){return queueFamilyProperties;}
-    std::set<uint32_t> getQueueIndices(VkQueueFlagBits bits);
+    std::set<uint32_t> getQueueFamilyIndices(VkQueueFlagBits bits);
 };
 
 

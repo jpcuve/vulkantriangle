@@ -22,20 +22,6 @@ MainWindow::MainWindow(const std::string& applicationName, int width, int height
     if (glfwCreateWindowSurface(vulkanInstance.getInstance(), window, nullptr, &surface) != VK_SUCCESS) {
         throw std::runtime_error("Failed to create window surface");
     }
-    vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice.getDevice(), surface, &details.capabilities);
-    uint32_t formatCount;
-    vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice.getDevice(), surface, &formatCount, nullptr);
-    if (formatCount > 0){
-        details.formats.resize(formatCount);
-        vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice.getDevice(), surface, &formatCount, details.formats.data());
-    }
-    uint32_t presentModeCount;
-    vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice.getDevice(), surface, &presentModeCount, nullptr);
-    if (presentModeCount > 0){
-        details.presentModes.resize(presentModeCount);
-        vkGetPhysicalDeviceSurfacePresentModesKHR(device, surface, &presentModeCount, details.presentModes.data());
-    }
-
     VulkanSwapchain swapchain(logicalDevice, surface);
 #ifndef NDEBUG
     std::cout << "Main window created" << std::endl;

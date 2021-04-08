@@ -13,7 +13,7 @@ const char* deviceExtensions = {
 VulkanDevice::VulkanDevice(VulkanPhysicalDevice & device): physicalDevice(device) {
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
     float queuePriority = 1.0f;
-    std::set<uint32_t> queueFamilyIndices = physicalDevice.getQueueIndices(VK_QUEUE_GRAPHICS_BIT);
+    std::set<uint32_t> queueFamilyIndices = physicalDevice.getQueueFamilyIndices(VK_QUEUE_GRAPHICS_BIT);
     if (queueFamilyIndices.empty()){
         throw std::runtime_error("No graphics queue family indices");
     }
