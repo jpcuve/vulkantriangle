@@ -8,6 +8,7 @@
 #include "VulkanDevice.h"
 #include "VulkanInstance.h"
 #include "VulkanSwapchain.h"
+#include "macros.h"
 
 MainWindow::MainWindow(const std::string& applicationName, int width, int height): vulkanInstance(applicationName) {
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);  // prevent auto opengl context creation
@@ -23,9 +24,7 @@ MainWindow::MainWindow(const std::string& applicationName, int width, int height
         throw std::runtime_error("Failed to create window surface");
     }
     VulkanSwapchain swapchain(logicalDevice, surface);
-#ifndef NDEBUG
-    std::cout << "Main window created" << std::endl;
-#endif
+    DEBUG("Main window created");
 }
 
 MainWindow::~MainWindow() {

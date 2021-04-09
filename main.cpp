@@ -10,6 +10,7 @@
 #include <set>
 #include <fstream>
 #include "MainWindow.h"
+#include "macros.h"
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
@@ -71,7 +72,7 @@ private:
     VkSemaphore renderFinishedSemaphore;
 
     void initWindow() {
-        std::cout << "Initializing window" << std::endl;
+        DEBUG("Initializing window");
         glfwInit();
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);  // prevent auto opengl context creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);  // prevent resizing
@@ -760,7 +761,7 @@ int main() {
     }
     return EXIT_SUCCESS;
 */
-    std::cout << "Hello, World!" << std::endl;
+    DEBUG("Hello, World!");
     glfwInit();
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);  // prevent auto opengl context creation
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);  // prevent resizing
