@@ -8,21 +8,21 @@
 #include <vulkan/vulkan.h>
 #include <vector>
 #include <set>
+#include "VulkanQueueFamily.h"
 
 class VulkanPhysicalDevice {
 private:
     VkPhysicalDevice device{};
     VkPhysicalDeviceProperties physicalDeviceProperties{};
     VkPhysicalDeviceFeatures physicalDeviceFeatures{};
-    std::vector<VkQueueFamilyProperties> queueFamilyProperties;
+    std::vector<VulkanQueueFamily> queueFamilies;
 public:
     explicit VulkanPhysicalDevice(VkPhysicalDevice device);
     VkPhysicalDevice getDevice() {return device;}
     VkPhysicalDeviceProperties getProperties(){return physicalDeviceProperties;}
     VkPhysicalDeviceFeatures getFeatures(){return physicalDeviceFeatures;}
     const char *getName(){return physicalDeviceProperties.deviceName;}
-    std::vector<VkQueueFamilyProperties> getQueueFamilyProperties(){return queueFamilyProperties;}
-    std::set<uint32_t> getQueueFamilyIndices(VkQueueFlagBits bits);
+    std::vector<VulkanQueueFamily> getQueueFamilies() { return queueFamilies; }
 };
 
 

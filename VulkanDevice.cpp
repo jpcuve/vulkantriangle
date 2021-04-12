@@ -13,18 +13,19 @@ const char* deviceExtensions = {
 VulkanDevice::VulkanDevice(VulkanPhysicalDevice & device): physicalDevice(device) {
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
     float queuePriority = 1.0f;
-    std::set<uint32_t> queueFamilyIndices = physicalDevice.getQueueFamilyIndices(VK_QUEUE_GRAPHICS_BIT);
-    if (queueFamilyIndices.empty()){
-        throw std::runtime_error("No graphics queue family indices");
+    for (auto & queueFamily: physicalDevice.getQueueFamilies()){
+        if (queueFamily.isGraphics()){
+            VkDeviceQueueCreateInfo queueCreateInfo{
+                    .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+                    .queueFamilyIndex = queueFamily.getIndex(),
+                    .queueCount = 1,
+                    .pQueuePriorities = &queuePriority,
+            };
+            queueCreateInfos.push_back(queueCreateInfo);
+        }
     }
-    for (uint32_t queueFamilyIndex: queueFamilyIndices) {
-        VkDeviceQueueCreateInfo queueCreateInfo{
-                .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
-                .queueFamilyIndex = queueFamilyIndex,
-                .queueCount = 1,
-                .pQueuePriorities = &queuePriority,
-        };
-        queueCreateInfos.push_back(queueCreateInfo);
+    if (queueCreateInfos.empty()){
+        throw std::runtime_error("No graphics queue family indices");
     }
     VkPhysicalDeviceFeatures deviceFeatures{};
     VkDeviceCreateInfo createInfo{

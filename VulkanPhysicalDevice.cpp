@@ -10,19 +10,13 @@ VulkanPhysicalDevice::VulkanPhysicalDevice(VkPhysicalDevice device): device(devi
     vkGetPhysicalDeviceFeatures(device, &physicalDeviceFeatures);
     uint32_t queueFamilyCount = 0;
     vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
-    queueFamilyProperties = std::vector<VkQueueFamilyProperties>(queueFamilyCount);
-    vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilyProperties.data());
+    VkQueueFamilyProperties queueFamilyProperties[queueFamilyCount];
+    vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilyProperties);
+    queueFamilies = std::vector<VulkanQueueFamily>();
+    for (uint32_t i = 0; i < queueFamilyCount; i++){
+        queueFamilies.emplace_back(i, queueFamilyProperties[i]);
+    }
 #ifndef NDEBUG
     std::cout << "Physical device created" << std::endl;
 #endif
-}
-
-std::set<uint32_t> VulkanPhysicalDevice::getQueueFamilyIndices(VkQueueFlagBits bits) {
-    std::set<uint32_t> s;
-    for (uint32_t i = 0; i < queueFamilyProperties.size(); i++){
-        if (queueFamilyProperties[i].queueFlags & bits){
-            s.insert(i);
-        }
-    }
-    return s;
 }

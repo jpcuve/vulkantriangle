@@ -8,11 +8,12 @@
 
 VulkanSwapchain::VulkanSwapchain(VulkanDevice & device, VkSurfaceKHR & surface): logicalDevice(device) {
     auto physicalDevice = device.getPhysicalDevice();
-    auto graphicsQueueFamilyIndices = physicalDevice.getQueueFamilyIndices(VK_QUEUE_GRAPHICS_BIT);
-    for (int index: graphicsQueueFamilyIndices){
-        VkBool32 presentSupport = VK_FALSE;
-        // the next call is necessary but I do not know why
-        vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice.getDevice(), index, surface, &presentSupport);
+    for (auto & vulkanQueueFamily: physicalDevice.getQueueFamilies()){
+        if (vulkanQueueFamily.isGraphics()){
+            VkBool32 presentSupport = VK_FALSE;
+            // the next call is necessary but I do not know why
+            vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice.getDevice(), vulkanQueueFamily.getIndex(), surface, &presentSupport);
+        }
     }
     VkSurfaceCapabilitiesKHR surfaceCapabilities{};
     vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice.getDevice(), surface, &surfaceCapabilities);
