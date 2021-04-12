@@ -76,6 +76,10 @@ VulkanSwapchain::VulkanSwapchain(VulkanDevice & device, VkSurfaceKHR & surface):
     if (vkCreateSwapchainKHR(logicalDevice.getDevice(), &createInfo, nullptr, &swapChain) != VK_SUCCESS){
         throw std::runtime_error("Failed to create swap chain");
     }
+    uint32_t imageCount;
+    vkGetSwapchainImagesKHR(device.getDevice(), swapChain, &imageCount, nullptr);
+    images.resize(imageCount);
+    vkGetSwapchainImagesKHR(device.getDevice(), swapChain, &imageCount, images.data());
     std::cout << "Swap chain created" << std::endl;
 }
 

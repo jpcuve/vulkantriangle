@@ -12,9 +12,11 @@ class VulkanSwapchain {
 private:
     VulkanDevice & logicalDevice;
     VkSwapchainKHR swapChain;
+    std::vector<VkImage> images;
 public:
     VulkanSwapchain(VulkanDevice & device, VkSurfaceKHR & surface);
     ~VulkanSwapchain();
+    std::vector<VkImage> getImages(){ return images; }
 };
 
 
