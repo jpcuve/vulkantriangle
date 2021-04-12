@@ -7,16 +7,17 @@
 
 #include <vulkan/vulkan.h>
 #include "VulkanDevice.h"
+#include "VulkanImage.h"
 
 class VulkanSwapchain {
 private:
     VulkanDevice & logicalDevice;
     VkSwapchainKHR swapChain;
-    std::vector<VkImage> images;
+    std::vector<VulkanImage> images;
 public:
     VulkanSwapchain(VulkanDevice & device, VkSurfaceKHR & surface);
     ~VulkanSwapchain();
-    std::vector<VkImage> getImages(){ return images; }
+    std::vector<VulkanImage> getImages(){ return images; }
 };
 
 

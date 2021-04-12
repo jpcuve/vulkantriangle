@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <vulkan/vulkan.h>
 #include "VulkanSwapchain.h"
+#include "macros.h"
 
 VulkanSwapchain::VulkanSwapchain(VulkanDevice & device, VkSurfaceKHR & surface): logicalDevice(device) {
     auto physicalDevice = device.getPhysicalDevice();
@@ -37,6 +38,7 @@ VulkanSwapchain::VulkanSwapchain(VulkanDevice & device, VkSurfaceKHR & surface):
             formatIndex = i;
         }
     }
+    auto surfaceFormat = surfaceFormats[formatIndex];
     // choose presentation mode
     VkPresentModeKHR presentMode = VK_PRESENT_MODE_FIFO_KHR;  // always present
     for (uint32_t i = 0; i < presentModeCount; i++){
@@ -49,8 +51,8 @@ VulkanSwapchain::VulkanSwapchain(VulkanDevice & device, VkSurfaceKHR & surface):
             .sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
             .surface = surface,
             .minImageCount = std::max(surfaceCapabilities.minImageCount + 1, surfaceCapabilities.maxImageCount),
-            .imageFormat = surfaceFormats[formatIndex].format,
-            .imageColorSpace = surfaceFormats[formatIndex].colorSpace,
+            .imageFormat = surfaceFormat.format,
+            .imageColorSpace = surfaceFormat.colorSpace,
             .imageExtent = surfaceCapabilities.currentExtent,  // TODO check this is not UINT32_MAX...?
             .imageArrayLayers = 1,
             .imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
@@ -60,6 +62,7 @@ VulkanSwapchain::VulkanSwapchain(VulkanDevice & device, VkSurfaceKHR & surface):
             .clipped = VK_TRUE,
             .oldSwapchain = VK_NULL_HANDLE,
     };
+
 /*
     QueueFamilyIndices indices = findQueueFamilyIndices(device.getPhysicalDevice());
     if (indices.graphicsFamily != indices.presentFamily){
@@ -78,12 +81,15 @@ VulkanSwapchain::VulkanSwapchain(VulkanDevice & device, VkSurfaceKHR & surface):
     }
     uint32_t imageCount;
     vkGetSwapchainImagesKHR(device.getDevice(), swapChain, &imageCount, nullptr);
-    images.resize(imageCount);
-    vkGetSwapchainImagesKHR(device.getDevice(), swapChain, &imageCount, images.data());
-    std::cout << "Swap chain created" << std::endl;
+    VkImage is[imageCount];
+    vkGetSwapchainImagesKHR(device.getDevice(), swapChain, &imageCount, is);
+    for (uint32_t i = 0; i < imageCount; i++){
+        images.emplace_back(VulkanImage(device, is[i], surfaceFormat.format));
+    }
+    DEBUG("Swap chain created");
 }
 
 VulkanSwapchain::~VulkanSwapchain() {
     vkDestroySwapchainKHR(logicalDevice.getDevice(), swapChain, nullptr);
-    std::cout << "Swap chain destroyed" << std::endl;
+    DEBUG("Swap chain destroyed");
 }
