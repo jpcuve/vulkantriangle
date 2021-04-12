@@ -43,7 +43,6 @@ VulkanInstance::VulkanInstance(const std::string& applicationName) {
     for (int i = 0; i < physicalDeviceCount; i++) {
         physicalDevices.emplace_back(VulkanPhysicalDevice(pPhysicalDevices[i]));
     }
-
 #ifndef NDEBUG
     std::cout << "Vulkan instance created" << std::endl;
     for (auto &physicalDevice: getPhysicalDevices()){

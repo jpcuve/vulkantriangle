@@ -83,6 +83,7 @@ VulkanSwapchain::VulkanSwapchain(VulkanDevice & device, VkSurfaceKHR & surface):
     vkGetSwapchainImagesKHR(device.getDevice(), swapChain, &imageCount, nullptr);
     VkImage is[imageCount];
     vkGetSwapchainImagesKHR(device.getDevice(), swapChain, &imageCount, is);
+    images = std::vector<VulkanImage>();
     for (uint32_t i = 0; i < imageCount; i++){
         images.emplace_back(VulkanImage(device, is[i], surfaceFormat.format));
     }
