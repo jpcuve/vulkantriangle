@@ -17,7 +17,8 @@ private:
     VkPhysicalDeviceFeatures physicalDeviceFeatures{};
     std::vector<VulkanQueueFamily> queueFamilies;
 public:
-    explicit VulkanPhysicalDevice(VkPhysicalDevice device);
+    VulkanPhysicalDevice()= default;
+    VulkanPhysicalDevice(VkPhysicalDevice device, VkPhysicalDeviceProperties properties, VkPhysicalDeviceFeatures features);
     VkPhysicalDevice getDevice() {return device;}
     VkPhysicalDeviceProperties getProperties(){return physicalDeviceProperties;}
     VkPhysicalDeviceFeatures getFeatures(){return physicalDeviceFeatures;}

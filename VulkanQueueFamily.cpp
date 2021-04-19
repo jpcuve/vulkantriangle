@@ -3,7 +3,10 @@
 //
 
 #include "VulkanQueueFamily.h"
+#include "macros.h"
+#include <iostream>
 
 VulkanQueueFamily::VulkanQueueFamily(uint32_t index, VkQueueFamilyProperties properties): index(index), properties(properties) {
-
+    DEBUG("Creating queue family");
+    DEBUG("Queue family created");
 }

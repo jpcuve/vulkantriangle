@@ -13,6 +13,7 @@ class MainWindow {
 private:
     GLFWwindow* window;
     VulkanInstance vulkanInstance;
+    VkDevice device{};
     VkSurfaceKHR surface{};
 public:
     MainWindow(const std::string& applicationName, int width, int height);

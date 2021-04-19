@@ -4,11 +4,10 @@
 
 #include <iostream>
 #include "VulkanInstance.h"
+#include "macros.h"
 
 VulkanInstance::VulkanInstance(const std::string& applicationName) {
-#ifndef NDEBUG
-    std::cout << "Creating Vulkan instance" << std::endl;
-#endif
+    DEBUG("Creating vulkan instance");
     auto appInfo = VkApplicationInfo{
         .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
         .pApplicationName = applicationName.c_str(),
@@ -39,21 +38,19 @@ VulkanInstance::VulkanInstance(const std::string& applicationName) {
     }
     VkPhysicalDevice pPhysicalDevices[physicalDeviceCount];
     vkEnumeratePhysicalDevices(instance, &physicalDeviceCount, pPhysicalDevices);
-    physicalDevices = std::vector<VulkanPhysicalDevice>();
-    for (int i = 0; i < physicalDeviceCount; i++) {
-        physicalDevices.emplace_back(VulkanPhysicalDevice(pPhysicalDevices[i]));
+    physicalDevices = std::vector<VulkanPhysicalDevice>(physicalDeviceCount);
+    for (size_t i = 0; i < physicalDeviceCount; i++) {
+        VkPhysicalDeviceProperties physicalDeviceProperties;
+        vkGetPhysicalDeviceProperties(pPhysicalDevices[i], &physicalDeviceProperties);
+        VkPhysicalDeviceFeatures physicalDeviceFeatures;
+        vkGetPhysicalDeviceFeatures(pPhysicalDevices[i], &physicalDeviceFeatures);
+        physicalDevices.emplace_back(pPhysicalDevices[i], physicalDeviceProperties, physicalDeviceFeatures);
     }
-#ifndef NDEBUG
-    std::cout << "Vulkan instance created" << std::endl;
-    for (auto &physicalDevice: getPhysicalDevices()){
-        std::cout << "Physical device: " << physicalDevice.getName() << std::endl;
-    }
-#endif
+    DEBUG("Vulkan instance created");
 }
 
 VulkanInstance::~VulkanInstance() {
-#ifndef NDEBUG
-    std::cout << "Destroying Vulkan instance" << std::endl;
-#endif
+    DEBUG("Destroying vulkan instance");
     vkDestroyInstance(instance, nullptr);
+    DEBUG("Vulkan instance destroyed");
 }

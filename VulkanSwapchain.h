@@ -6,18 +6,15 @@
 #define VULKANTEST_VULKANSWAPCHAIN_H
 
 #include <vulkan/vulkan.h>
-#include "VulkanDevice.h"
 #include "VulkanImage.h"
 
 class VulkanSwapchain {
 private:
-    VulkanDevice & logicalDevice;
-    VkSwapchainKHR swapChain;
-    std::vector<VulkanImage> images;
+    VkDevice device;
+    VkSurfaceKHR surface;
 public:
-    VulkanSwapchain(VulkanDevice & device, VkSurfaceKHR & surface);
+    VulkanSwapchain(VkDevice device, VkSurfaceKHR surface);
     ~VulkanSwapchain();
-    std::vector<VulkanImage> getImages(){ return images; }
 };
 
 

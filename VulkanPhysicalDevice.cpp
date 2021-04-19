@@ -4,19 +4,22 @@
 
 #include <iostream>
 #include "VulkanPhysicalDevice.h"
+#include "macros.h"
 
-VulkanPhysicalDevice::VulkanPhysicalDevice(VkPhysicalDevice device): device(device) {
-    vkGetPhysicalDeviceProperties(device, &physicalDeviceProperties);
-    vkGetPhysicalDeviceFeatures(device, &physicalDeviceFeatures);
+VulkanPhysicalDevice::VulkanPhysicalDevice(
+        VkPhysicalDevice device,
+        VkPhysicalDeviceProperties properties,
+        VkPhysicalDeviceFeatures features):
+        device(device),
+        physicalDeviceProperties(properties),
+        physicalDeviceFeatures(features) {
+    DEBUG("Creating physical device");
     uint32_t queueFamilyCount = 0;
     vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
     VkQueueFamilyProperties queueFamilyProperties[queueFamilyCount];
     vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilyProperties);
-    queueFamilies = std::vector<VulkanQueueFamily>();
-    for (uint32_t i = 0; i < queueFamilyCount; i++){
+    for (size_t i = 0; i < queueFamilyCount; i++){
         queueFamilies.emplace_back(i, queueFamilyProperties[i]);
     }
-#ifndef NDEBUG
-    std::cout << "Physical device created" << std::endl;
-#endif
+    DEBUG("Physical device created");
 }
