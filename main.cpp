@@ -72,7 +72,7 @@ private:
     VkSemaphore renderFinishedSemaphore;
 
     void initWindow() {
-        DEBUG("Initializing window");
+        DEBUG("Initializing handle");
         glfwInit();
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);  // prevent auto opengl context creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);  // prevent resizing
@@ -160,7 +160,7 @@ private:
 
     void createSurface() {
         if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create window surface");
+            throw std::runtime_error("Failed to create handle surface");
         }
         std::cout << "Surface created" << std::endl;
     }

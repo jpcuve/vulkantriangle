@@ -2,38 +2,40 @@
 // Created by jpc on 21/06/21.
 //
 
-#include <vector>
 #include <memory>
+#include <vector>
 #include "MainWindow.h"
+#include "Surface.h"
 
-MainWindow::MainWindow(const char *title, const int width, const int height): window {nullptr}, instance {nullptr} {
-    window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+MainWindow::MainWindow(const char *title, int width, int height): handle {nullptr}, instance {nullptr} {
+    handle = glfwCreateWindow(width, height, title, nullptr, nullptr);
     uint32_t glfwExtensionCount = 0;
     const char **glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
     std::vector<const char *> extensionNames {glfwExtensionCount};
     extensionNames.assign(glfwExtensions, glfwExtensions + glfwExtensionCount);
     instance = std::make_unique<vulkan::Instance>(extensionNames);
+    surface = std::make_unique<Surface>(handle, *instance);
 }
 
 MainWindow::~MainWindow() {
-    if (window){
-        glfwDestroyWindow(window);
+    if (handle){
+        glfwDestroyWindow(handle);
     }
 }
 
 MainWindow::MainWindow(MainWindow &&that) noexcept {
-    window = that.window;
-    that.window = nullptr;
+    handle = that.handle;
+    that.handle = nullptr;
 }
 
 MainWindow &MainWindow::operator=(MainWindow &&that) noexcept {
-    window = that.window;
-    that.window = nullptr;
+    handle = that.handle;
+    that.handle = nullptr;
     return *this;
 }
 
 void MainWindow::loop() {
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(handle)) {
         glfwPollEvents();
     }
 }

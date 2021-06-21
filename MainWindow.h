@@ -9,15 +9,17 @@
 #include <memory>
 #include <GLFW/glfw3.h>
 #include "vulkan/Instance.h"
+#include "Surface.h"
 
 
 class MainWindow {
 private:
-    GLFWwindow *window;
+    GLFWwindow *handle {nullptr};
     std::unique_ptr<vulkan::Instance> instance;
+    std::unique_ptr<Surface> surface;
 
 public:
-    MainWindow(const char *title, const int width, const int height);
+    MainWindow(const char *title, int width, int height);
     MainWindow(MainWindow &that) = delete;
     MainWindow &operator=(MainWindow &that) = delete;
     MainWindow(MainWindow &&that) noexcept ;

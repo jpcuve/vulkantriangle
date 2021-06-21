@@ -6,6 +6,7 @@
 #define VULKANTEST_PHYSICALDEVICE_H
 
 #include <vulkan/vulkan_core.h>
+#include <vector>
 
 namespace vulkan {
     class PhysicalDevice {
@@ -13,9 +14,11 @@ namespace vulkan {
         VkPhysicalDevice handle {VK_NULL_HANDLE};
         VkPhysicalDeviceProperties properties {};
         VkPhysicalDeviceFeatures features {};
+        std::vector<VkQueueFamilyProperties> queueFamilyProperties;
     public:
         PhysicalDevice();
         explicit PhysicalDevice(VkPhysicalDevice handle);
+        bool is_suitable();
 
     };
 }

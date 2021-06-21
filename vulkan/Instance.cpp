@@ -4,6 +4,7 @@
 
 #include "Instance.h"
 #include "PhysicalDevice.h"
+#include "PhysicalDeviceList.h"
 #include <iostream>
 
 vulkan::Instance::Instance(std::vector<const char *> &extensionNames) {
@@ -28,21 +29,14 @@ vulkan::Instance::Instance(std::vector<const char *> &extensionNames) {
     createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
     createInfo.ppEnabledLayerNames = validationLayers.data();
 #endif
-    if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
+    if (vkCreateInstance(&createInfo, nullptr, &handle) != VK_SUCCESS) {
         throw std::runtime_error("Failed to create Vulkan instance");
     }
-    uint32_t physicalDeviceCount = 0;
-    vkEnumeratePhysicalDevices(instance, &physicalDeviceCount, nullptr);
-    VkPhysicalDevice physicalDevices[physicalDeviceCount];
-    vkEnumeratePhysicalDevices(instance, &physicalDeviceCount, physicalDevices);
-    std::vector<vulkan::PhysicalDevice> v {physicalDeviceCount};
-    for (size_t i = 0; i < physicalDeviceCount; i++){
-        v[i] = vulkan::PhysicalDevice {physicalDevices[i]};
-    }
+    PhysicalDeviceList physicalDevices {handle};
 }
 
 vulkan::Instance::~Instance() {
-    if (instance != VK_NULL_HANDLE) {
-        vkDestroyInstance(instance, nullptr);
+    if (handle != VK_NULL_HANDLE) {
+        vkDestroyInstance(handle, nullptr);
     }
 }

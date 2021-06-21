@@ -11,10 +11,11 @@
 namespace vulkan {
     class Instance {
     private:
-        VkInstance instance {VK_NULL_HANDLE};
+        VkInstance handle {VK_NULL_HANDLE};
     public:
         explicit Instance(std::vector<const char *> &extensionNames);
         ~Instance();
+        VkInstance instance(){ return handle; }
     };
 }
 
