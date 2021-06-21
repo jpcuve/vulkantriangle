@@ -9,8 +9,8 @@
 #include <optional>
 #include <set>
 #include <fstream>
-#include "MainWindow.h"
 #include "macros.h"
+#include "MainWindow.h"
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;

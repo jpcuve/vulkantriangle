@@ -3,7 +3,7 @@ project(vulkantest)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(${PROJECT_NAME} main.cpp MainWindow.cpp MainWindow.h VulkanInstance.cpp VulkanInstance.h VulkanPhysicalDevice.cpp VulkanPhysicalDevice.h VulkanSwapchain.cpp VulkanSwapchain.h macros.h VulkanQueueFamily.cpp VulkanQueueFamily.h VulkanImage.cpp VulkanImage.h)
+add_executable(${PROJECT_NAME} main.cpp macros.h MainWindow.cpp MainWindow.h vulkan/Instance.cpp vulkan/Instance.h vulkan/PhysicalDevice.cpp vulkan/PhysicalDevice.h)
 
 find_package(Vulkan REQUIRED)
 target_link_libraries(${PROJECT_NAME} glfw ${GLFW_LIBRARIES} Vulkan::Vulkan)
