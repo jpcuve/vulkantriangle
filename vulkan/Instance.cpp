@@ -35,6 +35,7 @@ vulkan::Instance::Instance(std::vector<const char *> &extensionNames) {
     PhysicalDeviceList physicalDevices {handle};
 #ifndef NDEBUG
     for (auto &physicalDevice: physicalDevices.devices){
+        std::cout << physicalDevice << std::endl;
     }
 #endif
 }
