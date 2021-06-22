@@ -14,8 +14,16 @@ Surface::Surface(GLFWwindow *window, vulkan::Instance &instance): instanceHandle
 #endif
 }
 
+Surface &Surface::operator=(Surface &&that) {
+    handle = that.handle;
+    that.handle = VK_NULL_HANDLE;
+    instanceHandle = that.instanceHandle;
+    that.instanceHandle = VK_NULL_HANDLE;
+    return *this;
+}
+
 Surface::~Surface() {
-    if (handle != VK_NULL_HANDLE){
+    if (handle != VK_NULL_HANDLE && instanceHandle != VK_NULL_HANDLE){
         vkDestroySurfaceKHR(instanceHandle, handle, nullptr);
 #ifndef NDEBUG
         std::cout << "surface destroyed" << std::endl;
@@ -27,3 +35,4 @@ std::ostream &operator<<(std::ostream &os, Surface &that) {
     os << "Surface: " << that.handle;
     return os;
 }
+

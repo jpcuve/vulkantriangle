@@ -15,9 +15,11 @@ private:
     VkSurfaceKHR handle {VK_NULL_HANDLE};
     VkInstance instanceHandle {VK_NULL_HANDLE};
 public:
+    Surface()= default;
     Surface(GLFWwindow *window, vulkan::Instance &instance);
     Surface(Surface& that) = delete;
-    Surface &operator=(Surface& that) = delete;
+    Surface &operator=(Surface &that) = delete;
+    Surface &operator=(Surface &&that);
     ~Surface();
     VkSurfaceKHR get_handle(){ return handle; }
     friend std::ostream &operator<<(std::ostream &os, Surface &that);
