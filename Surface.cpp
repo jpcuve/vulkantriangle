@@ -7,7 +7,7 @@
 
 Surface::Surface(GLFWwindow *window, vulkan::Instance &instance): instanceHandle{instance.instance()} {
     if (glfwCreateWindowSurface(instanceHandle, window, nullptr, &handle) != VK_SUCCESS) {
-        throw std::runtime_error("Failed to create handle surface");
+        throw std::runtime_error("Failed to create surface");
     }
 #ifndef NDEBUG
     std::cout << "surface constructed" << std::endl;

@@ -7,14 +7,14 @@
 #include "MainWindow.h"
 #include "Surface.h"
 
-MainWindow::MainWindow(const char *title, int width, int height): handle {nullptr}, instance {nullptr} {
+MainWindow::MainWindow(const char *title, int width, int height): handle {nullptr} {
     handle = glfwCreateWindow(width, height, title, nullptr, nullptr);
     uint32_t glfwExtensionCount = 0;
     const char **glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
     std::vector<const char *> extensionNames {glfwExtensionCount};
     extensionNames.assign(glfwExtensions, glfwExtensions + glfwExtensionCount);
-    instance = std::make_unique<vulkan::Instance>(extensionNames);
-    surface = Surface(handle, *instance);
+    instance = vulkan::Instance {extensionNames};
+    surface = Surface(handle, instance);
     std::cout << surface << std::endl;
 }
 

@@ -13,7 +13,10 @@ namespace vulkan {
     private:
         VkInstance handle {VK_NULL_HANDLE};
     public:
+        Instance() = default;
         explicit Instance(std::vector<const char *> &extensionNames);
+        Instance &operator=(Instance &that) = delete;
+        Instance &operator=(Instance &&that);
         ~Instance();
         VkInstance instance(){ return handle; }
     };

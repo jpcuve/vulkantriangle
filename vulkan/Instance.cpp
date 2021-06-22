@@ -40,8 +40,15 @@ vulkan::Instance::Instance(std::vector<const char *> &extensionNames) {
 #endif
 }
 
+vulkan::Instance &vulkan::Instance::operator=(vulkan::Instance &&that) {
+    handle = that.handle;
+    that.handle = VK_NULL_HANDLE;
+    return *this;
+}
+
 vulkan::Instance::~Instance() {
     if (handle != VK_NULL_HANDLE) {
         vkDestroyInstance(handle, nullptr);
     }
 }
+

@@ -15,7 +15,7 @@
 class MainWindow {
 private:
     GLFWwindow *handle {nullptr};
-    std::unique_ptr<vulkan::Instance> instance;
+    vulkan::Instance instance;
     Surface surface;
 
 public:
