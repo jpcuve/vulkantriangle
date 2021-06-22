@@ -22,3 +22,8 @@ Surface::~Surface() {
 #endif
     }
 }
+
+std::ostream &operator<<(std::ostream &os, Surface &that) {
+    os << "Surface: " << that.handle;
+    return os;
+}

@@ -20,6 +20,7 @@ public:
     Surface &operator=(Surface& that) = delete;
     ~Surface();
     VkSurfaceKHR get_handle(){ return handle; }
+    friend std::ostream &operator<<(std::ostream &os, Surface &that);
 };
 
 

@@ -15,6 +15,7 @@ MainWindow::MainWindow(const char *title, int width, int height): handle {nullpt
     extensionNames.assign(glfwExtensions, glfwExtensions + glfwExtensionCount);
     instance = std::make_unique<vulkan::Instance>(extensionNames);
     surface = std::make_unique<Surface>(handle, *instance);
+    std::cout << *surface << std::endl;
 }
 
 MainWindow::~MainWindow() {
