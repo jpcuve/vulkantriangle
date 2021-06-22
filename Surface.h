@@ -19,6 +19,7 @@ public:
     Surface(Surface& that) = delete;
     Surface &operator=(Surface& that) = delete;
     ~Surface();
+    VkSurfaceKHR get_handle(){ return handle; }
 };
 
 

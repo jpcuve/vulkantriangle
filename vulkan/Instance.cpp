@@ -33,6 +33,10 @@ vulkan::Instance::Instance(std::vector<const char *> &extensionNames) {
         throw std::runtime_error("Failed to create Vulkan instance");
     }
     PhysicalDeviceList physicalDevices {handle};
+#ifndef NDEBUG
+    for (auto &physicalDevice: physicalDevices.devices){
+    }
+#endif
 }
 
 vulkan::Instance::~Instance() {

@@ -2,7 +2,6 @@
 // Created by jpc on 21/06/21.
 //
 
-#include <iostream>
 #include "PhysicalDevice.h"
 
 vulkan::PhysicalDevice::PhysicalDevice(): PhysicalDevice(VK_NULL_HANDLE) {
@@ -16,13 +15,33 @@ vulkan::PhysicalDevice::PhysicalDevice(VkPhysicalDevice h): handle(h) {
         vkGetPhysicalDeviceQueueFamilyProperties(handle, &queueFamilyCount, nullptr);
         queueFamilyProperties = std::vector<VkQueueFamilyProperties> {queueFamilyCount};
         vkGetPhysicalDeviceQueueFamilyProperties(handle, &queueFamilyCount, queueFamilyProperties.data());
-#ifndef NDEBUG
-        std::cout << "Physical device: " << properties.deviceName << std::endl;
-#endif
     }
 }
 
-bool vulkan::PhysicalDevice::is_suitable() {
-    return false;
+std::vector<uint32_t> vulkan::PhysicalDevice::family_indices(QueueType queueType, Surface &surface) {
+    std::vector<uint32_t> ret;
+    for (uint32_t i = 0; i < queueFamilyProperties.size(); i++){
+        auto &props = queueFamilyProperties[i];
+        switch (queueType)  {
+            case GRAPHICS:
+                if (props.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+                    ret.push_back(i);
+                }
+                break;
+            case COMPUTE:
+                if (props.queueFlags & VK_QUEUE_COMPUTE_BIT) {
+                    ret.push_back(i);
+                }
+                break;
+            case PRESENT:
+                VkBool32 presentSupport = VK_FALSE;
+                vkGetPhysicalDeviceSurfaceSupportKHR(handle, i, surface.get_handle(), &presentSupport);
+                if (presentSupport) {
+                    ret.push_back(i);
+                }
+                break;
+        }
+    }
+    return ret;
 }
 

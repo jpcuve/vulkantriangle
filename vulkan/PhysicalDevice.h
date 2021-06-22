@@ -7,8 +7,14 @@
 
 #include <vulkan/vulkan_core.h>
 #include <vector>
+#include <iostream>
+#include "../Surface.h"
 
 namespace vulkan {
+    enum QueueType {
+        GRAPHICS, COMPUTE, PRESENT
+    };
+
     class PhysicalDevice {
     private:
         VkPhysicalDevice handle {VK_NULL_HANDLE};
@@ -18,8 +24,7 @@ namespace vulkan {
     public:
         PhysicalDevice();
         explicit PhysicalDevice(VkPhysicalDevice handle);
-        bool is_suitable();
-
+        std::vector<uint32_t> family_indices(QueueType queueType, Surface &surface);
     };
 }
 
