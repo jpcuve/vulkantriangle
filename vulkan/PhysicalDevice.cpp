@@ -45,8 +45,8 @@ std::vector<uint32_t> vulkan::PhysicalDevice::family_indices(QueueType queueType
     return ret;
 }
 
-std::ostream &operator<<(std::ostream &os, const vulkan::PhysicalDevice &that) {
-    os << "Physical device: " << that.properties.deviceName;
+std::ostream &operator<<(std::ostream &os, vulkan::PhysicalDevice that) {
+    os << "Physical device: " << that.get_device_name();
     return os;
 }
 

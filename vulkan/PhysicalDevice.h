@@ -11,12 +11,6 @@
 #include "../Surface.h"
 
 namespace vulkan {
-    class PhysicalDevice;
-}
-
-std::ostream &operator<<(std::ostream& os, const vulkan::PhysicalDevice& that);
-
-namespace vulkan {
     enum QueueType {
         GRAPHICS, COMPUTE, PRESENT
     };
@@ -31,9 +25,11 @@ namespace vulkan {
         PhysicalDevice();
         explicit PhysicalDevice(VkPhysicalDevice handle);
         std::vector<uint32_t> family_indices(QueueType queueType, Surface &surface);
-        friend std::ostream &::operator<<(std::ostream& os, const vulkan::PhysicalDevice& that);
+        const char *get_device_name() { return properties.deviceName; }
     };
 }
+
+std::ostream &operator<<(std::ostream& os, vulkan::PhysicalDevice that);
 
 
 #endif //VULKANTEST_PHYSICALDEVICE_H
